@@ -1,18 +1,22 @@
+// routes/productosRoutes.js
 import express from "express";
-import {
-  crearProducto,
-  obtenerProductos,
-  obtenerProducto,
-  actualizarProducto,
-  eliminarProducto
-} from "../controllers/productosController.js";
+import productosController from "../controllers/productosController.js";
 
 const router = express.Router();
 
-router.post("/", crearProducto);
-router.get("/", obtenerProductos);
-router.get("/:id", obtenerProducto);
-router.put("/:id", actualizarProducto);
-router.delete("/:id", eliminarProducto);
+// GET /api/productos - Obtener todos
+router.get("/", productosController.getAll);
+
+// GET /api/productos/:id - Obtener uno por ID
+router.get("/:id", productosController.getById);
+
+// POST /api/productos - Crear nuevo
+router.post("/", productosController.create);
+
+// PUT /api/productos/:id - Actualizar
+router.put("/:id", productosController.update);
+
+// DELETE /api/productos/:id - Eliminar
+router.delete("/:id", productosController.delete);
 
 export default router;

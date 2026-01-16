@@ -16,21 +16,21 @@ console.log("🚀 Iniciando generación AutoCRUD con arquitectura MVC...\n");
 
 // Filtramos solo los modelos (sin incluir init-models.js)
 const models = fs.readdirSync(modelsPath)
-    .filter(f => f.endsWith(".js") && f !== "init-models.js");
+  .filter(f => f.endsWith(".js") && f !== "init-models.js");
 
 if (models.length === 0) {
-    console.log("⚠️  No se encontraron modelos para procesar");
-    process.exit(0);
+  console.log("⚠️  No se encontraron modelos para procesar");
+  process.exit(0);
 }
 
 for (const modelFile of models) {
-    const modelName = path.basename(modelFile, ".js"); // ejemplo: productos
-    const modelClass = modelName.charAt(0).toUpperCase() + modelName.slice(1); // Productos
+  const modelName = path.basename(modelFile, ".js"); // ejemplo: productos
+  const modelClass = modelName.charAt(0).toUpperCase() + modelName.slice(1); // Productos
 
-    console.log(`📦 Generando CRUD para: ${modelName}`);
+  console.log(`📦 Generando CRUD para: ${modelName}`);
 
-    // ========== SERVICIO ==========
-    const serviceContent = `// services/${modelName}Service.js
+  // ========== SERVICIO ==========
+  const serviceContent = `// services/${modelName}Service.js
 import BaseService from "./BaseService.js";
 import { sequelize } from "../config/db.js";
 import ${modelName}Model from "../models/${modelFile}";
@@ -56,11 +56,11 @@ class ${modelClass}Service extends BaseService {
 export default new ${modelClass}Service();
 `;
 
-    fs.writeFileSync(`${servicesPath}/${modelName}Service.js`, serviceContent);
-    console.log(`  ✅ Servicio: ${modelName}Service.js`);
+  fs.writeFileSync(`${servicesPath}/${modelName}Service.js`, serviceContent);
+  console.log(`  ✅ Servicio: ${modelName}Service.js`);
 
-    // ========== CONTROLADOR ==========
-    const controllerContent = `// controllers/${modelName}Controller.js
+  // ========== CONTROLADOR ==========
+  const controllerContent = `// controllers/${modelName}Controller.js
 import BaseController from "./base/BaseController.js";
 import ${modelName}Service from "../services/${modelName}Service.js";
 
@@ -80,11 +80,11 @@ class ${modelClass}Controller extends BaseController {
 export default new ${modelClass}Controller();
 `;
 
-    fs.writeFileSync(`${controllersPath}/${modelName}Controller.js`, controllerContent);
-    console.log(`  ✅ Controlador: ${modelName}Controller.js`);
+  fs.writeFileSync(`${controllersPath}/${modelName}Controller.js`, controllerContent);
+  console.log(`  ✅ Controlador: ${modelName}Controller.js`);
 
-    // ========== RUTAS ==========
-    const routeContent = `// routes/${modelName}Routes.js
+  // ========== RUTAS ==========
+  const routeContent = `// routes/${modelName}Routes.js
 import express from "express";
 import ${modelName}Controller from "../controllers/${modelName}Controller.js";
 
@@ -108,10 +108,10 @@ router.delete("/:id", ${modelName}Controller.delete);
 export default router;
 `;
 
-    fs.writeFileSync(`${routesPath}/${modelName}Routes.js`, routeContent);
-    console.log(`  ✅ Rutas: ${modelName}Routes.js`);
+  fs.writeFileSync(`${routesPath}/${modelName}Routes.js`, routeContent);
+  console.log(`  ✅ Rutas: ${modelName}Routes.js`);
 
-    console.log(`✨ CRUD completo generado para: ${modelName}\n`);
+  console.log(`✨ CRUD completo generado para: ${modelName}\n`);
 }
 
 // ========== GENERAR INDEX DE RUTAS ==========
@@ -120,15 +120,15 @@ console.log("📝 Generando index de rutas...");
 const routeIndexContent = `// routes/index.js
 import express from "express";
 ${models.map(modelFile => {
-    const modelName = path.basename(modelFile, ".js");
-    return `import ${modelName}Routes from "./${modelName}Routes.js";`;
+  const modelName = path.basename(modelFile, ".js");
+  return `import ${modelName}Routes from "./${modelName}Routes.js";`;
 }).join('\n')}
 
 const router = express.Router();
 
 ${models.map(modelFile => {
-    const modelName = path.basename(modelFile, ".js");
-    return `router.use("/${modelName}", ${modelName}Routes);`;
+  const modelName = path.basename(modelFile, ".js");
+  return `router.use("/${modelName}", ${modelName}Routes);`;
 }).join('\n')}
 
 export default router;

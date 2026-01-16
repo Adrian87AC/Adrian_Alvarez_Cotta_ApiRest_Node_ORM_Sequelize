@@ -12,14 +12,14 @@ fs.mkdirSync(controllersPath, { recursive: true });
 fs.mkdirSync(servicesPath, { recursive: true });
 fs.mkdirSync(routesPath, { recursive: true });
 
-console.log("🚀 Iniciando generación AutoCRUD con arquitectura MVC...\n");
+console.log("Iniciando generación AutoCRUD con arquitectura MVC...\n");
 
 // Filtramos solo los modelos (sin incluir init-models.js)
 const models = fs.readdirSync(modelsPath)
   .filter(f => f.endsWith(".js") && f !== "init-models.js");
 
 if (models.length === 0) {
-  console.log("⚠️  No se encontraron modelos para procesar");
+  console.log("No se encontraron modelos para procesar");
   process.exit(0);
 }
 
@@ -57,7 +57,7 @@ export default new ${modelClass}Service();
 `;
 
   fs.writeFileSync(`${servicesPath}/${modelName}Service.js`, serviceContent);
-  console.log(`  ✅ Servicio: ${modelName}Service.js`);
+  console.log(`Servicio: ${modelName}Service.js`);
 
   // ========== CONTROLADOR ==========
   const controllerContent = `// controllers/${modelName}Controller.js
@@ -81,7 +81,7 @@ export default new ${modelClass}Controller();
 `;
 
   fs.writeFileSync(`${controllersPath}/${modelName}Controller.js`, controllerContent);
-  console.log(`  ✅ Controlador: ${modelName}Controller.js`);
+  console.log(`Controlador: ${modelName}Controller.js`);
 
   // ========== RUTAS ==========
   const routeContent = `// routes/${modelName}Routes.js
@@ -135,9 +135,9 @@ export default router;
 `;
 
 fs.writeFileSync(`${routesPath}/index.js`, routeIndexContent);
-console.log("  ✅ Index de rutas: routes/index.js\n");
+console.log("Index de rutas: routes/index.js\n");
 
-console.log("🎉 ¡AutoCRUD generado exitosamente!");
-console.log(`📊 Recursos generados: ${models.length}`);
-console.log("✨ Arquitectura: MVC reducida (Rutas → Controladores → Servicios)\n");
-console.log("💡 Para iniciar el servidor ejecuta: npm start");
+console.log("¡AutoCRUD generado exitosamente!");
+console.log(`Recursos generados: ${models.length}`);
+console.log("Arquitectura: MVC reducida (Rutas → Controladores → Servicios)\n");
+console.log("Para iniciar el servidor ejecuta: npm start");

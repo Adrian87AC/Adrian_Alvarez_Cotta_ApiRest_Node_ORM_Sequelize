@@ -1,4 +1,4 @@
-# 🧩 API REST con Node.js, Sequelize y MySQL
+# API REST con Node.js, Sequelize y MySQL
 
 Este proyecto se utiliza en clase como ejemplo práctico para aprender el desarrollo de **APIs RESTful** utilizando **Node.js**, el **ORM Sequelize** y una base de datos **MySQL**.
 
@@ -6,7 +6,7 @@ El objetivo principal es comprender cómo se estructuran las capas de un proyect
 
 ---
 
-## 🧱 Tecnologías utilizadas
+## Tecnologías utilizadas
 
 - **Node.js** → Entorno de ejecución para JavaScript en el servidor.  
 - **Express.js** → Framework minimalista para crear servidores HTTP y definir rutas.  
@@ -15,7 +15,7 @@ El objetivo principal es comprender cómo se estructuran las capas de un proyect
 
 ---
 
-## ⚙️ Instalación
+## Instalación
 
 1. Clonar el repositorio:
    ```bash

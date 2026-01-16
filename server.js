@@ -75,7 +75,7 @@ app.use('*', (req, res) => {
 
 // Manejo de errores global
 app.use((err, req, res, next) => {
-  console.error('❌ Error:', err);
+  console.error('Error:', err);
   res.status(err.status || 500).json({
     success: false,
     message: err.message || 'Error interno del servidor',
@@ -92,29 +92,29 @@ const startServer = async () => {
     // Iniciar el servidor
     app.listen(PORT, () => {
       console.log('\n' + '='.repeat(50));
-      console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
-      console.log(`📚 API REST disponible en http://localhost:${PORT}/api`);
-      console.log(`💚 Health check: http://localhost:${PORT}/health`);
-      console.log(`🌍 Entorno: ${process.env.NODE_ENV || 'development'}`);
+      console.log(`Servidor corriendo en http://localhost:${PORT}`);
+      console.log(` API REST disponible en http://localhost:${PORT}/api`);
+      console.log(`Health check: http://localhost:${PORT}/health`);
+      console.log(`Entorno: ${process.env.NODE_ENV || 'development'}`);
       console.log('='.repeat(50));
-      console.log('\n💡 Presiona CTRL+C para detener el servidor\n');
+      console.log('\n Presiona CTRL+C para detener el servidor\n');
     });
   } catch (error) {
-    console.error('❌ Error al iniciar el servidor:', error);
+    console.error(' Error al iniciar el servidor:', error);
     process.exit(1);
   }
 };
 
 // ========== MANEJO DE CIERRE GRACEFUL ==========
 const gracefulShutdown = async (signal) => {
-  console.log(`\n\n⚠️  Señal ${signal} recibida. Cerrando servidor...`);
+  console.log(`\n\n  Señal ${signal} recibida. Cerrando servidor...`);
 
   try {
     await disconnectDB();
-    console.log('✅ Servidor cerrado correctamente');
+    console.log('Servidor cerrado correctamente');
     process.exit(0);
   } catch (error) {
-    console.error('❌ Error al cerrar el servidor:', error);
+    console.error('Error al cerrar el servidor:', error);
     process.exit(1);
   }
 };
@@ -125,11 +125,11 @@ process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
 
 // Capturar errores no manejados
 process.on('unhandledRejection', (reason, promise) => {
-  console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });
 
 process.on('uncaughtException', (error) => {
-  console.error('❌ Uncaught Exception:', error);
+  console.error('Uncaught Exception:', error);
   gracefulShutdown('UNCAUGHT_EXCEPTION');
 });
 

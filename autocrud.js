@@ -6,13 +6,116 @@ const modelsPath = "./models";
 const controllersPath = "./controllers";
 const servicesPath = "./services";
 const routesPath = "./routes";
+const baseControllersPath = "./controllers/base";
 
 // Crear directorios necesarios
 fs.mkdirSync(controllersPath, { recursive: true });
 fs.mkdirSync(servicesPath, { recursive: true });
 fs.mkdirSync(routesPath, { recursive: true });
+fs.mkdirSync(baseControllersPath, { recursive: true });
 
 console.log("Iniciando generación AutoCRUD con arquitectura MVC...\n");
+
+// ========== BASE SERVICE ==========
+const baseServiceContent = `// services/BaseService.js
+class BaseService {
+  constructor(model) {
+    this.model = model;
+  }
+
+  async getAll() {
+    return await this.model.findAll();
+  }
+
+  async getById(id) {
+    return await this.model.findByPk(id);
+  }
+
+  async create(data) {
+    return await this.model.create(data);
+  }
+
+  async update(id, data) {
+    const item = await this.model.findByPk(id);
+    if (!item) return null;
+    return await item.update(data);
+  }
+
+  async delete(id) {
+    const item = await this.model.findByPk(id);
+    if (!item) return null;
+    return await item.destroy();
+  }
+}
+
+export default BaseService;
+`;
+fs.writeFileSync(`${servicesPath}/BaseService.js`, baseServiceContent);
+console.log("BaseService: services/BaseService.js");
+
+// ========== BASE CONTROLLER ==========
+const baseControllerContent = `// controllers/base/BaseController.js
+class BaseController {
+  constructor(service) {
+    this.service = service;
+  }
+
+  getAll = async (req, res) => {
+    try {
+      const items = await this.service.getAll();
+      res.json(items);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+
+  getById = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const item = await this.service.getById(id);
+      if (!item) return res.status(404).json({ message: "Elemento no encontrado" });
+      res.json(item);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+
+  create = async (req, res) => {
+    try {
+      const item = await this.service.create(req.body);
+      res.status(201).json(item);
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  }
+
+  update = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const item = await this.service.update(id, req.body);
+      if (!item) return res.status(404).json({ message: "Elemento no encontrado" });
+      res.json(item);
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  }
+
+  delete = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await this.service.delete(id);
+      if (!result) return res.status(404).json({ message: "Elemento no encontrado" });
+      res.json({ message: "Elemento eliminado correctamente" });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+}
+
+export default BaseController;
+`;
+fs.writeFileSync(`${baseControllersPath}/BaseController.js`, baseControllerContent);
+console.log("BaseController: controllers/base/BaseController.js");
 
 // Filtramos solo los modelos (sin incluir init-models.js)
 const models = fs.readdirSync(modelsPath)

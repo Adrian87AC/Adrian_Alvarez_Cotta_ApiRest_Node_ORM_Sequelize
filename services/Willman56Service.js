@@ -5,9 +5,8 @@ import Willman56Model from "../models/Willman56.js";
 import { DataTypes } from "sequelize";
 
 // Inicializar el modelo
-const Willman56 = Willman56Model.init ? 
-  Willman56Model.init(sequelize, DataTypes) : 
-  Willman56Model(sequelize, DataTypes);
+const WillmanClass = Willman56Model(sequelize, DataTypes);
+const Willman56 = WillmanClass.init ? WillmanClass.init(sequelize, DataTypes) : WillmanClass;
 
 class Willman56Service extends BaseService {
   constructor() {

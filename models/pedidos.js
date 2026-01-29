@@ -1,7 +1,7 @@
 import _sequelize from 'sequelize';
 const { Model, Sequelize } = _sequelize;
 
-export default class productos extends Model {
+export default class pedidos extends Model {
   static init(sequelize, DataTypes) {
   return super.init({
     id: {
@@ -10,34 +10,32 @@ export default class productos extends Model {
       allowNull: false,
       primaryKey: true
     },
-    nombre: {
-      type: DataTypes.STRING(100),
-      allowNull: false
-    },
-    descripcion: {
-      type: DataTypes.TEXT,
-      allowNull: true
-    },
-    precio: {
-      type: DataTypes.DECIMAL(10,2),
-      allowNull: false
-    },
-    stock: {
+    cliente_id: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      defaultValue: 0
-    },
-    categoria_id: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       references: {
-        model: 'categorias',
+        model: 'clientes',
         key: 'id'
       }
+    },
+    fecha: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.fn('current_timestamp')
+    },
+    total: {
+      type: DataTypes.DECIMAL(10,2),
+      allowNull: true,
+      defaultValue: 0.00
+    },
+    estado: {
+      type: DataTypes.ENUM('pendiente','pagado','enviado','entregado','cancelado'),
+      allowNull: true,
+      defaultValue: "pendiente"
     }
   }, {
     sequelize,
-    tableName: 'productos',
+    tableName: 'pedidos',
     timestamps: false,
     indexes: [
       {
@@ -49,10 +47,10 @@ export default class productos extends Model {
         ]
       },
       {
-        name: "categoria_id",
+        name: "cliente_id",
         using: "BTREE",
         fields: [
-          { name: "categoria_id" },
+          { name: "cliente_id" },
         ]
       },
     ]

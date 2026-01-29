@@ -5,6 +5,8 @@ import dotenv from 'dotenv';
 import { connectDB, disconnectDB } from './config/db.js';
 import routes from './routes/index.js';
 import Willman56Routes from './routes/Willman56Routes.js';
+import rockyRoutes from './routes/rockyRoutes.js';
+import adrian20Routes from './routes/adrian20Routes.js';
 
 dotenv.config();
 
@@ -63,6 +65,8 @@ app.get('/health', (req, res) => {
 // Rutas de la API
 app.use('/api', routes);
 app.use('/willman56', Willman56Routes); // Alias solicitado por usuario
+app.use('/rocky', rockyRoutes);
+app.use('/adrian20', adrian20Routes);
 
 // ========== MANEJO DE ERRORES ==========
 

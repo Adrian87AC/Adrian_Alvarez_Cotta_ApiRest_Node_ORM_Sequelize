@@ -24,5 +24,6 @@ export default function (sequelize, DataTypes) {
         }
     }
 
+    Log.init(sequelize, DataTypes);
     return Log;
 }
